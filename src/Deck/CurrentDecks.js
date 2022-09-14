@@ -1,13 +1,18 @@
 import React from "react";
-import {
-  NavLink,
-} from "react-router-dom";
-import DeckDelete from "../Deck/DeckDelete";
+import { NavLink, useHistory,} from "react-router-dom";
+import DeckDelete from "./DeckDelete";
+
+
 
 function DeckList ({ decks }) {
-    //const history = useHistory();
+    const history = useHistory();
 
-
+    const deleteFunction = (event) => {
+        if (window.confirm("Delete this deck?")) {
+        deleteDeck(event.target.value);
+        history.push("/");
+        }
+    }
     const cardStyle = {
         justifyContent: "space-around",
         marginRight: "5px",
