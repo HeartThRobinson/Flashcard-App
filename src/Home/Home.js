@@ -10,7 +10,7 @@ function Home() {
                 className="btn btn-success"
                 type="button"
                 onClick={() => history.push("/decks/new")}>
-                <span className="oi oi-plus mr-1"></span>
+                <span className="placeholder"></span>
                 Create Deck
             </button>
             <CurrentDecks />
