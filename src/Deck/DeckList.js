@@ -3,8 +3,6 @@ import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { listDecks } from "../utils/api";
 
-import DeckDelete from "./DeckDelete";
-
 function DeckList() {
     //Hooks
     const [decks, setDecks] = useState(['Loading...']);
