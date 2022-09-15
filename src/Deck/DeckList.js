@@ -1,58 +1,62 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+
 import { listDecks } from "../utils/api";
+import { deleteDeck } from "../utils/api/index";
 
 function DeckList() {
     //Hooks
-    const [decks, setDecks] = useState(['Loading...']);
+    const [decks, setDecks] = useState([]);
     const history = useHistory();
 
     //Create/Load deck list
-    useEffect(() => {
-        setDecks({});
+   useEffect(() => {
         const abortController = new AbortController();
 
         async function loadDecks() {
             try {
-                const decks = await listDecks(deckAbort.signal);
+                const decks = await listDecks(abortController.signal);
                 setDecks(decks);
             } catch (error) {
-                console.log("I'm sorry Dave, I'm afraid I can't do that")
+                console.log("Failed to load deck list")
             }
         }
 
-        loadDecks();
+       loadDecks();
 
-        return () => {
-            abortController.abort;
-        };
+       return () => {
+           abortController.abort();
+       };
     }, []);
+
+    console.log(decks);
 
     //Print current decks
     const listDeck = decks.map((deck) => {
         return (
             <div key={deck.id}>
-                <div>
-                    <h2>
-                        {deck.name} <p className="float-right">{deck.cards.length} cards</p>
-                    </h2>
+                <div className="border border-dark">
+                    <div>
+                        <h2>
+                            {deck.name} <p className="float-right">{deck.cards.length} cards</p>
+                        </h2>
+                    </div>
+                    <br />
+                    <div>
+                        <p>{deck.description}</p>
+                    </div>
                 </div>
                 <br />
                 <div>
-                    <p>{deck.description}</p>
-                </div>
-                <br />
-                <div>
-                    /*fix these later*/
-                    <button className="btn btn-info mx-1" onClick={() => history.push(`/decks/${deck.id}`)}>
+                    <button style={{ marginRight: 20 }} className="btn btn-info" onClick={() => history.push(`/decks/${deck.id}`)}>
                         View
                     </button>
-                    <button className="btn btn-warning" onClick={() => history.push(`/decks/${deck.id}/study`)}>
+                    <button style={{ marginRight: 20 }} className="btn btn-info" onClick={() => history.push(`/decks/${deck.id}/study`)}>
                         Study
                     </button>
-                    <button className="btn btn-danger" onClick={() => {
-                        if (window.confirm("Delete this Deck ? You will not be able to recover it.")) {
+                    <button style={{ alignSelf: 'flex-end' }} className="btn btn-danger justify-content-end" onClick={() => {
+                        if (window.confirm("Delete this Deck? You will not be able to recover it.")) {
                             deleteDeck(deck.id)
                                 .then((history.push(`/`)))
                                 .then(window.location.reload())
@@ -60,6 +64,7 @@ function DeckList() {
                     }}>
                         Delete
                     </button>
+                    <br /><br /><br />
                 </div>
             </div>
         );
@@ -67,7 +72,7 @@ function DeckList() {
 
     return (
         <>
-            {listDeck};
+            {listDeck}
         </>
     );
 }

@@ -1,6 +1,7 @@
 import React from "react";
-import CurrentDecks from "./CurrentDecks";
 import { useHistory } from "react-router-dom";
+
+import DeckList from "../Deck/DeckList"
 
 function Home() {
     const history = useHistory();
@@ -10,10 +11,10 @@ function Home() {
                 className="btn btn-success"
                 type="button"
                 onClick={() => history.push("/decks/new")}>
-                <span className="placeholder"></span>
                 Create Deck
             </button>
-            <CurrentDecks />
+            <br /><br />
+            <DeckList />
         </div>
     )
 }

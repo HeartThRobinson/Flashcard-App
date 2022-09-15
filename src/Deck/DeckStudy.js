@@ -6,32 +6,31 @@ import CardList from "../Cards/CardList";
 
 function DeckStudy() {
     //Hooks
-    const [deck, setDeck] = useState({'Loading...'});
+    const [deck, setDeck] = useState([]);
     const [cards, setCards] = useState([]);
     const [count, setCount] = useState(0);
     const { deckId } = useParams();
 
     //Load the correct deck
     useEffect(() => {
-        setDeck({});
         const abortController = new AbortController();
 
-        async function loadCard() {
+        async function loadDeck() {
             try {
                 const allCards = await readDeck(deckId, abortController.signal);
                 setDeck(allCards);
-                setCards(allCards.cards);
                 setCount(allCards.cards.length);
+                setCards(allCards.cards);
             }
             catch (error) {
-                console.log("I'm sorry Dave, I'm afraid I can't do that")
+                console.log("Failed to load study deck")
             }
         }
 
-        loadCard();
+        loadDeck();
 
         return () => {
-            abortController.abort;
+            abortController.abort();
         };
     }, [deckId])
 
@@ -41,18 +40,22 @@ function DeckStudy() {
             <div className="container">
                 <nav>
                     <div className="row">
-                        <Link to="/">Home /</Link>
-                        <Link to={`/decks/${deck.id}`}> {deck.name} /</Link>
+                        <Link to="/">Home</Link>
+                        <p> / </p>
+                        <Link to={`/decks/${deck.id}`}> {deck.name}</Link>
+                        <p> / </p>
                         <p style={{ color: 'grey' }}> Study</p>
                     </div>
                 </nav>
             </div>
             <div>
-                <h3>{deck.name}: Study</h3>
+                <h2>{deck.name}: Study</h2>
                 <div>
-                    <CardList deck={deck} cardCount={cardCount} cards={cards} />
+                    <CardList deck={deck} cards={cards} count={count} />
                 </div>
             </div>
         </>
     );
 }
+
+export default DeckStudy;
