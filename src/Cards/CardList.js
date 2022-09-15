@@ -37,7 +37,7 @@ function CardList({ deck, cards, count }) {
                     <p>{side ? cards[index]?.front : cards[index]?.back}</p>
                 </div>
 
-                <br />
+                <br /><br />
 
                 <div>
                     <button style={{ marginRight: 20 }} className="btn btn-info" onClick={flip}>
@@ -57,6 +57,7 @@ function CardList({ deck, cards, count }) {
                 <h3> Not Enough Cards</h3>
                     <p> You need at least 3 cards to study. There are {count} cards in this deck</p>
                 </div>
+                <br /><br />
                 <button style={{ marginRight: 20 }} className="btn btn-success" onClick={() => history.push(`/decks/${deck.id}/cards/new`)}>
                     Add Cards
                 </button>

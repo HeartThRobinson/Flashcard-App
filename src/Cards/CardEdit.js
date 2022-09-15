@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import { Link, useHistory, useParams } from "react-router-dom";
 import { readDeck, readCard, updateCard } from "../utils/api";
 
+import CardForm from "./CardForm";
+
 function CardEdit() {
     //Hooks
     const [deck, setDeck] = useState([]);
@@ -68,9 +70,6 @@ function CardEdit() {
             .then((theCardUpdate) => history.push(`/decks/${deck.id}`))
     }
 
-    const frontHandler = (event) => setFront(event.target.value);
-    const backHandler = (event) => setBack(event.target.value);
-
     return (
         //Form to edit card
         <>
@@ -88,39 +87,7 @@ function CardEdit() {
 
             <h2>Edit Card</h2>
             <div>
-                <form onSubmit={submitHandler}>
-                    <div className="column">
-                        <h4>Question:</h4>
-                            <textarea
-                                id="front"
-                                rows="4"
-                                placeholder="Front side of card"
-                                required
-                                onChange={frontHandler}
-                                value={front}
-                            ></textarea>
-                        <br />
-                        <h4>Answer:</h4>
-                            <textarea
-                                id="back"
-                                rows="4"
-                                placeholder="Back side of card"
-                                required
-                                onChange={backHandler}
-                                value={back}
-                            ></textarea>
-                        <br />
-                    </div>
-
-                    <br />
-
-                    <button style={{ marginRight: 20 }} className="btn btn-info" onClick={() => history.push(`/decks/${deck.id}`)}>
-                        Done
-                    </button>
-                    <button type="submit" style={{ marginRight: 20 }} className="btn btn-success">
-                        Save
-                    </button>
-                </form>
+                <CardForm front={front} back={back} setFront={setFront} setBack={setBack} submitHandler={submitHandler} deck={deck} />
             </div>
         </>
     );

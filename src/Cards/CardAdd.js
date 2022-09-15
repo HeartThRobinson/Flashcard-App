@@ -2,13 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Link, useParams, useHistory } from "react-router-dom";
 import { readDeck, createCard } from "../utils/api";
 
+import CardForm from "./CardForm";
+
 function CardAdd() {
     //Hooks to set deck and front/back
     const [deck, setDeck] = useState([]);
     const [front, setFront] = useState("");
     const [back, setBack] = useState("");
     const { deckId } = useParams();
-    const history = useHistory();
 
     //Load the correct deck
     useEffect(() => {
@@ -42,9 +43,6 @@ function CardAdd() {
         setBack("");
     }
 
-    const frontHandler = (event) => setFront(event.target.value);
-    const backHandler = (event) => setBack(event.target.value);
-
     return (
         //Form to add card
         <>
@@ -63,39 +61,7 @@ function CardAdd() {
             <h2>{deck.name}: Add Card</h2>
 
             <div>
-                <form onSubmit={submitHandler}>
-                    <div className="column">
-                        <h4>Question:</h4>
-                        <textarea
-                            id="front"
-                            rows="4"
-                            placeholder="Front side of card"
-                            required
-                            onChange={frontHandler}
-                            value={front}
-                        ></textarea>
-                        <br />
-                        <h4>Answer:</h4>
-                        <textarea
-                            id="back"
-                            rows="4"
-                            placeholder="Back side of card"
-                            required
-                            onChange={backHandler}
-                            value={back}
-                        ></textarea>
-                        <br />
-                    </div>
-
-                    <br />
-
-                    <button style={{ marginRight: 20 }} className="btn btn-info" onClick={() => history.push(`/decks/${deck.id}`)}>
-                        Done
-                    </button>
-                    <button type="submit" style={{ marginRight: 20 }} className="btn btn-success">
-                        Save
-                    </button>
-                </form>
+                <CardForm front={front} back={back} setFront={setFront} setBack={setBack} submitHandler={submitHandler} deck={deck} />
             </div>
         </>
     );
